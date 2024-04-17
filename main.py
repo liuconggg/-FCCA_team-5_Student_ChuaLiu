@@ -44,5 +44,5 @@ jobData.head()
 courses = ['Computer Science', 'Information Technology'] 
 
 jobData = jobData[jobData['stream'].isin(courses)] # extra only computer science and infromation technology
-print(jobData)
+print(len(jobData))
 
