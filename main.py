@@ -54,16 +54,38 @@ courses = ['Computer Science', 'Information Technology']
 
 jobData = jobData[jobData['stream'].isin(courses)] # extra only computer science and infromation technology
 
-le = preprocessing.LabelEncoder()
+le = preprocessing.LabelEncoder() 
 jobData = jobData.replace("=", "" ,regex = True) 
 
 jobData.drop(columns=['degree', 'name'], inplace=True)
-jobData['gender'] = le.fit_transform(jobData['gender'])
-jobData['stream'] = le.fit_transform(jobData['stream'])
-jobData['college_name'] = le.fit_transform(jobData['college_name'])
-jobData['placement_status'] = le.fit_transform(jobData['placement_status'])
+jobData['gender'] = le.fit_transform(jobData['gender']) # encoding gender, 0 for female, 1 for male
+jobData['stream'] = le.fit_transform(jobData['stream']) # encoding stream, 0 for computer science, 1 for information technology
+jobData['college_name'] = le.fit_transform(jobData['college_name']) # encoding college_name, 0-23 represents the different schools
+jobData['placement_status'] = le.fit_transform(jobData['placement_status']) # encoding placement_status, 0 for not placed, 1 for placed.
 
+encoded_gender_counts = jobData['gender'].value_counts()
 
+print("Number of 0s:", encoded_gender_counts[0])
+print("Number of 1s:", encoded_gender_counts[1])
+
+# Heat Map 
 plt.figure(figsize=(8, 8))
 sb.heatmap(jobData.corr(), annot=True)
+plt.show()
+
+# Histogram for distribution of gender
+plt.figure(figsize=(10, 5))
+ax = sb.countplot(x='gender', data=jobData)
+
+for p in ax.patches:
+    ax.annotate(format(p.get_height(), '.0f'), 
+                 (p.get_x() + p.get_width() / 2., p.get_height()), 
+                 ha = 'center', va = 'center', 
+                 xytext = (0, 5), 
+                 textcoords = 'offset points')
+    
+plt.xlabel('Gender')
+plt.ylabel('Count')
+plt.title('Distribution of Gender')
+plt.xticks(ticks=[0, 1], labels=['Female', 'Male'])  # If 0 represents male and 1 represents female
 plt.show()
