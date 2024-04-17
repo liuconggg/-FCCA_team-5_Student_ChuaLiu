@@ -55,14 +55,10 @@ courses = ['Computer Science', 'Information Technology']
 jobData = jobData[jobData['stream'].isin(courses)] # extra only computer science and infromation technology
 
 le = preprocessing.LabelEncoder()
-jobData = jobData.replace("=", "" ,regex = True) 
-
-jobData.drop(columns=['degree', 'name'], inplace=True)
+jobData.drop(columns=['degree', 'name', 'college_name'], inplace=True)
 jobData['gender'] = le.fit_transform(jobData['gender'])
 jobData['stream'] = le.fit_transform(jobData['stream'])
-jobData['college_name'] = le.fit_transform(jobData['college_name'])
 jobData['placement_status'] = le.fit_transform(jobData['placement_status'])
-
 
 plt.figure(figsize=(8, 8))
 sb.heatmap(jobData.corr(), annot=True)
