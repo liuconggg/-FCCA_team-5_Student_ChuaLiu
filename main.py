@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 
+
 sb.set_theme() 
 
 jobData = pd.read_csv('job_placement.csv')
@@ -14,16 +15,24 @@ jobData.head()
 uniRankings.head()
 
 
+# Description of jobData 
+jobData.describe()
+
+
+
 # Markdown 1: Cleaning of Data 
 jobData = jobData.drop("name", axis=1) # dropping column "name"
-jobData = jobData.replace("--", "" ,regex = True)
+jobData.isnull().sum() # finding null values for each data
+jobData[jobData['years_of_experience'].isnull()] # seeing the null row
+jobData=jobData.dropna() # dropping the null row
+
+jobData = jobData.replace("--", "" ,regex = True) 
 
 collegeName = jobData["college_name"].unique() # find out how many unique college
 uniRanking = pd.DataFrame(uniRankings[['2024 RANK', 'Institution Name']]).iloc[1:] # extra only '2024 RANK' and 'Instituition Name' from row 1 onwards
 cleanedUniRankings = uniRanking.set_index('2024 RANK') 
 uniRankingDict = cleanedUniRankings.to_dict('dict') # convert to dictionary for comparison later on
 uniRankingDict= uniRankingDict['Institution Name'] # accessing the dictionary 
-
 
 def find_best_match(college_name, uniRankingDict):
     """Finds the best match and returns the corresponding ranking"""
@@ -44,5 +53,7 @@ jobData.head()
 courses = ['Computer Science', 'Information Technology'] 
 
 jobData = jobData[jobData['stream'].isin(courses)] # extra only computer science and infromation technology
-print(len(jobData))
 
+plt.figure(figsize=(8, 8))
+sb.heatmap(jobData.corr(), annot=True)
+plt.show()
