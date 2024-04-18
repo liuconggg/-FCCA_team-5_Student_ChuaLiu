@@ -8,6 +8,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn.tree import plot_tree
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import export_graphviz
+from IPython.display import Image
+import graphviz
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, ConfusionMatrixDisplay
+
+# Tree Visualisation
+from sklearn.tree import export_graphviz
+from IPython.display import Image
+import graphviz
 
 sb.set_theme() 
 
@@ -229,8 +239,6 @@ X = pd.DataFrame(jobData[variables])
 # Split the Dataset into Train and Test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
 
-y_train["placement_status"].value_counts()  
-
 X_train.describe()
 
 trainDF = pd.concat([y_train, X_train], axis = 1).reindex(y_train.index)
@@ -259,6 +267,44 @@ print("Classification Accuracy \t:", dectree.score(X_test, y_test))
 print()
 
 # Plot the Confusion Matrix for Train and Test
+f, axes = plt.subplots(1, 2, figsize=(12, 4))
+sb.heatmap(confusion_matrix(y_train, y_train_pred),
+           annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[0])
+sb.heatmap(confusion_matrix(y_test, y_test_pred), 
+           annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[1])
+
+# Random Forest Classification
+y = pd.DataFrame(jobData["placement_status"])
+X = pd.DataFrame(jobData[variables])
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.7, random_state=42)
+
+# 100 decision trees and use random forest cross-validation and no limit for processor
+classifier_rf = RandomForestClassifier(n_jobs=-1, max_depth=5,
+                                       n_estimators=100, oob_score=True)
+
+classifier_rf.fit(X_train, y_train)
+
+y_pred = classifier_rf.predict(X_test)
+
+# Calculate Model Accuracy
+print("Random Forest Classifier Accuracy:", accuracy_score(y_test, y_pred))
+
+# show only the first three decision tree
+for i in range(3):
+    tree = classifier_rf.estimators_[i]
+    dot_data = export_graphviz(tree,
+                               feature_names=X_train.columns,  
+                               filled=True,  
+                               max_depth=2, 
+                               impurity=False, 
+                               proportion=True)
+    graph = graphviz.Source(dot_data)
+
+# display(graph)
+y_train_pred = classifier_rf.predict(X_train)
+y_test_pred = classifier_rf.predict(X_test)
+
 f, axes = plt.subplots(1, 2, figsize=(12, 4))
 sb.heatmap(confusion_matrix(y_train, y_train_pred),
            annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[0])
