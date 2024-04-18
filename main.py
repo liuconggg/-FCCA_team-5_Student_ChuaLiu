@@ -32,16 +32,15 @@ collegeName = jobData["college_name"].unique() # find out how many unique colleg
 
 
 uniRanking = pd.DataFrame(uniRankings[['2024 RANK', 'Institution Name', 'Country']]).iloc[1:] # extra only '2024 RANK' and 'Instituition Name' from row 1 onwards
-# inUs = uniRanking['Country'].isin(["United States"])
+inUs = uniRanking['Country'].isin(["United States"])
 
-# cleanedUniRankings = uniRanking[inUs].set_index('2024 RANK') 
-cleanedUniRankings = uniRanking.set_index('2024 RANK') 
+cleanedUniRankings = uniRanking[inUs].set_index('2024 RANK') 
+# cleanedUniRankings = uniRanking.set_index('2024 RANK') 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace(r'\s*\([^()]*\)', '', regex=True)
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace(",", "" ,regex = True) 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace("-", "" ,regex = True) 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace(" at ", "" ,regex = True) 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace("The ", "" ,regex = True) 
-
 
 
 # Create a defaultdict with lists as values
@@ -54,6 +53,7 @@ for index, row in cleanedUniRankings.iterrows():
     
     # Append the college name to the list corresponding to the ranking key
     uniRankingDict[ranking].append(college_name)
+    
 
 
 def remove_whitespace(text):
@@ -107,8 +107,10 @@ for variable in encoded_variables:
     encoding_mappings[variable] = dict(zip(le.classes_, le.transform(le.classes_)))
 
 # Heat Map 
-plt.figure(figsize=(8, 8))
-sb.heatmap(jobData.corr(), annot=True)
+plt.figure(figsize=(16, 10))
+heatmap = sb.heatmap(jobData.corr(), annot=True)
+heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=0)
+
 plt.show()
 
 # Histogram for distribution of gender
@@ -131,9 +133,6 @@ plt.show()
 
 # Insights
 
-variables = ['age', 'gpa', 'years_of_experience']
-plt.figure(figsize=(18, 9))
-
 placement_status_labels = {v: k for k, v in encoding_mappings['placement_status'].items()}
 
 # Loop with adjusted plotting
@@ -151,3 +150,42 @@ plt.tight_layout()
 plt.show()
 
 
+college_counts = jobData['college_name'].value_counts()
+
+college_percentages = (college_counts / college_counts.sum()) * 100
+
+# Group colleges with less than a threshold (e.g., 3%) into "Others" category
+threshold = 3
+mask = (college_percentages < threshold)
+college_counts_grouped = college_counts[~mask]
+college_counts_grouped['Others'] = college_counts[mask].sum()
+
+def map_college_name(index):
+    # Check if the index is 'Others', return it directly
+    if index == 'Others':
+        return 'Others'
+    else:
+        # Get the corresponding college name from the encoding mappings
+        return list(encoding_mappings['college_name'].keys())[index]
+
+# Map the index values (college names) to their corresponding labels
+mapped_labels = college_counts_grouped.index.map(map_college_name) 
+
+def autopct_format(values):
+    def my_format(pct):
+        total = sum(values)
+        val = int(round(pct * total / 100.0))
+        return f'{val} ({pct:.1f}%)'
+    return my_format
+
+colors = plt.cm.tab20c.colors[:len(college_counts_grouped)]
+
+# Plot the pie chart with the mapped labels
+plt.figure(figsize=(20, 10))
+plt.pie(college_counts_grouped, autopct = autopct_format(college_counts_grouped), startangle=90, colors=colors, textprops={'fontsize': 12}, pctdistance=0.875, labeldistance=1.1)
+plt.title(f'Distribution of Students in Different Schools ({college_counts.sum()})')
+plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+# Adding legend
+plt.legend(labels = mapped_labels, title="Colleges", loc="center left", bbox_to_anchor=(0.8, 0, 0.5, 1))
+plt.show()
