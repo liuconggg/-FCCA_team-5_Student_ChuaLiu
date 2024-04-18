@@ -189,3 +189,16 @@ plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 # Adding legend
 plt.legend(labels = mapped_labels, title="Colleges", loc="center left", bbox_to_anchor=(0.8, 0, 0.5, 1))
 plt.show()
+
+
+#Catplot for Placement 
+plt.figure(figsize=(15, 10))
+sb.set_palette("pastel")
+graph = sb.catplot(y = "placement_status", data = jobData, kind = "count", height = 8)
+ax = graph.axes[0, 0]
+ax.bar_label(ax.containers[0], label_type='edge', fontsize=12, padding=5)
+ax.set_ylabel('') 
+ax.set_xlabel("Count", labelpad=10)  
+ax.set_title("Placement Status for graduates", pad=15)  # Increase or decrease this value as needed
+plt.yticks(ticks=range(len(encoding_mappings['placement_status'])), labels=list(encoding_mappings['placement_status'].keys()))
+
