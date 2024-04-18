@@ -6,45 +6,31 @@ from sklearn import preprocessing
 from collections import defaultdict
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import confusion_matrix
 from sklearn.tree import plot_tree
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
-
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import export_graphviz
-from IPython.display import Image
 import graphviz
-from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, ConfusionMatrixDisplay
-
-# Tree Visualisation
-from sklearn.tree import export_graphviz
-from IPython.display import Image
-import graphviz
-
-sb.set_theme() 
+from sklearn.metrics import accuracy_score, confusion_matrix, mean_squared_error
 
 jobData = pd.read_csv('job_placement.csv')
 uniRankings = pd.read_csv('uni_ranking.csv')
 
 jobData.head()
-uniRankings.head()
-
-
-# Description of jobData 
 jobData.describe()
 
-# Markdown 1: Cleaning of Data 
+
+uniRankings.head()
+uniRankings.describe()
+
+# Cleaning of Data 
 jobData.isnull().sum() # finding null values for each data
 jobData[jobData['years_of_experience'].isnull()] # seeing the null row
 jobData=jobData.dropna() # dropping the null row
-
 jobData = jobData.replace("--", "" ,regex = True) 
 jobData = jobData.replace("-", "" ,regex = True) 
 
 collegeName = jobData["college_name"].unique() # find out how many unique college
-
-
 uniRanking = pd.DataFrame(uniRankings[['2024 RANK', 'Institution Name', 'Country']]).iloc[1:] # extra only '2024 RANK' and 'Instituition Name' from row 1 onwards
 inUs = uniRanking['Country'].isin(["United States"])
 
@@ -54,7 +40,6 @@ cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace("-", "" ,regex = True) 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace(" at ", "" ,regex = True) 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace("The ", "" ,regex = True) 
-
 
 # Create a defaultdict with lists as values
 uniRankingDict = defaultdict(list)
@@ -67,8 +52,6 @@ for index, row in cleanedUniRankings.iterrows():
     # Append the college name to the list corresponding to the ranking key
     uniRankingDict[ranking].append(college_name)
     
-    
-
 def remove_whitespace(text):
     return ''.join(text.split())
 
@@ -98,19 +81,33 @@ def find_best_match(college_name, uniRankingDict):
 
 # Create new column 
 jobData['ranking'] = jobData['college_name'].apply(lambda x: find_best_match(x, uniRankingDict))
-isSanFrans  = jobData['college_name'].isin(['University of CaliforniaSan Francisco'])
+isSanFrans  = jobData['college_name'].isin(['University of CaliforniaSan Francisco']) # name of university not in ranking dataset
 jobData = jobData[~isSanFrans] # filter out the college name that is in job data but not in university_ranking  which is "University of CaliforniaSan Francisco"
 
-courses = ['Computer Science', 'Information Technology'] 
+# bar chart for distribution of students in each stream 
+plt.figure(figsize=(15, 10))
+ax = sb.countplot(data=jobData, x='stream')
 
-jobData = jobData[jobData['stream'].isin(courses)] # extra only computer science and infromation technology
+# Annotate each bar with its count
+for p in ax.patches:
+    ax.annotate(format(p.get_height(), '.0f'), 
+                   (p.get_x() + p.get_width() / 2., p.get_height()), 
+                   ha = 'center', va = 'center', 
+                   xytext = (0, 10), 
+                   textcoords = 'offset points')
+
+ax.set_ylabel('Count', labelpad=10) 
+ax.set_xlabel("Stream", labelpad=10)  
+plt.title('Distribution of Student by Stream')
+plt.show()
+
+# Further data cleaning and preparation by encoding categoricable variables and focusing on computer science and information technology
+courses = ['Computer Science', 'Information Technology'] 
+jobData = jobData[jobData['stream'].isin(courses)] # extract only computer science and infromation technology
 
 le = preprocessing.LabelEncoder() 
 jobData = jobData.replace("=", "" ,regex = True) 
-
 jobData.drop(columns=['degree', 'name'], inplace=True)
-
-
 encoding_mappings = {}
 
 # Encode each variable and store mappings
@@ -118,21 +115,14 @@ encoded_variables = ['gender', 'stream', 'college_name', 'placement_status']
 for variable in encoded_variables:
     jobData[f'{variable}'] = le.fit_transform(jobData[variable])
     encoding_mappings[variable] = dict(zip(le.classes_, le.transform(le.classes_)))
-    
-jobData
 
-# Heat Map 
-plt.figure(figsize=(16, 10))
-heatmap = sb.heatmap(jobData.corr(), annot=True)
-heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=0)
-
-plt.show()
+jobData.head()
+jobData.describe()
 
 # Histogram for distribution of gender
 plt.figure(figsize=(10, 5))
 sb.set_palette("pastel")
 ax = sb.countplot(x='gender', data=jobData)
-
 
 for p in ax.patches:
     ax.annotate(format(p.get_height(), '.0f'), 
@@ -147,28 +137,8 @@ plt.title('Distribution of Gender')
 plt.xticks(ticks=[0, 1], labels=['Female', 'Male'])  # If 0 represents male and 1 represents female
 plt.show()
 
-
-# Insights
-
-placement_status_labels = {v: k for k, v in encoding_mappings['placement_status'].items()}
-
-# Loop with adjusted plotting
-variables = ["gpa", "years_of_experience"]
-plt.figure(figsize=(18, 9))
-
-for i, variable in enumerate(variables, 1):
-    plt.subplot(2, 2, i)
-    sb.kdeplot(data=jobData, x=variable, hue=jobData['placement_status'].map(placement_status_labels), fill=True, alpha=0.5, linewidth=0.5)
-    plt.xlabel(variable.capitalize())
-    plt.ylabel('Density')
-    plt.title(f'Density Plot of {variable.capitalize()} by Placement Status')
-
-plt.tight_layout()
-plt.show()
-
-
+#Pie chart for distribution of students in different colleges
 college_counts = jobData['college_name'].value_counts()
-
 college_percentages = (college_counts / college_counts.sum()) * 100
 
 # Group colleges with less than a threshold (e.g., 3%) into "Others" category
@@ -207,8 +177,7 @@ plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 plt.legend(labels = mapped_labels, title="Colleges", loc="center left", bbox_to_anchor=(0.8, 0, 0.5, 1))
 plt.show()
 
-
-#Catplot for Placement 
+#Catplot for Placement by Gender
 plt.figure(figsize=(15, 10))
 sb.set_palette("pastel")
 graph = sb.catplot(y="placement_status", hue="gender", data=jobData, kind="count", height=8, hue_order=range(len(encoding_mappings['gender'])), legend=False)
@@ -227,11 +196,30 @@ ax.set_ylabel('')
 ax.set_xlabel("Count", labelpad=10)  
 ax.set_title("Placement Status for graduates", pad=15)
 plt.yticks(ticks=range(len(encoding_mappings['placement_status'])), labels=list(encoding_mappings['placement_status'].keys()))
-
 legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
 plt.legend(labels=legend_labels, title="Gender", loc="upper right")
 plt.show()
 
+# Heat Map to show correlation between variables
+plt.figure(figsize=(16, 10))
+heatmap = sb.heatmap(jobData.corr(), annot=True)
+heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=0)
+plt.title('Heat Map')
+plt.show()
+
+#KDE plot GPA and Years of Experience
+placement_status_labels = {v: k for k, v in encoding_mappings['placement_status'].items()}
+variables = ["gpa", "years_of_experience"]
+plt.figure(figsize=(18, 9))
+
+for i, variable in enumerate(variables, 1):
+    plt.subplot(2, 2, i)
+    sb.kdeplot(data=jobData, x=variable, hue=jobData['placement_status'].map(placement_status_labels), fill=True, alpha=0.5, linewidth=0.5)
+    plt.xlabel(variable.capitalize())
+    plt.ylabel('Density')
+    plt.title(f'Density Plot for {variable.capitalize()} by Placement Status')
+plt.tight_layout()
+plt.show()
 
 # Classification
 y = pd.DataFrame(jobData["placement_status"])
@@ -240,14 +228,11 @@ X = pd.DataFrame(jobData[variables])
 # Split the Dataset into Train and Test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
 
-X_train.describe()
-
 trainDF = pd.concat([y_train, X_train], axis = 1).reindex(y_train.index)
 
 dectree = DecisionTreeClassifier(max_depth = 3)  # create the decision tree object
 dectree.fit(X_train, y_train)  
 
-X_train.columns
 f = plt.figure(figsize=(12,12))
 plot_tree(dectree, filled=True, rounded=True, 
           feature_names=X_train.columns.tolist(),
@@ -267,12 +252,22 @@ print("Goodness of Fit of Model \tTest Dataset")
 print("Classification Accuracy \t:", dectree.score(X_test, y_test))
 print()
 
-# Plot the Confusion Matrix for Train and Test
 f, axes = plt.subplots(1, 2, figsize=(12, 4))
-sb.heatmap(confusion_matrix(y_train, y_train_pred),
-           annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[0])
-sb.heatmap(confusion_matrix(y_test, y_test_pred), 
-           annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[1])
+
+# Confusion matrix for the training set
+train_cm = confusion_matrix(y_train, y_train_pred)
+sb.heatmap(train_cm, annot=True, fmt=".0f", annot_kws={"size": 18}, ax=axes[0])
+axes[0].set_title('Train Confusion Matrix', fontsize=12)  # Set the title
+
+# Confusion matrix for the test set
+test_cm = confusion_matrix(y_test, y_test_pred)
+sb.heatmap(test_cm, annot=True, fmt=".0f", annot_kws={"size": 18}, ax=axes[1])
+axes[1].set_title('Test Confusion Matrix', fontsize=12)  # Set the title
+
+# Inserting a title in the middle
+f.suptitle('Classification Confusion Matrix for GPA and Years of Experience with respect to Placement Status', fontsize=14, y=1.05)
+plt.tight_layout()  # Adjust layout
+plt.show()
 
 # Random Forest Classification
 y = pd.DataFrame(jobData["placement_status"])
@@ -306,12 +301,24 @@ for i in range(3):
 y_train_pred = classifier_rf.predict(X_train)
 y_test_pred = classifier_rf.predict(X_test)
 
+# Plotting
 f, axes = plt.subplots(1, 2, figsize=(12, 4))
-sb.heatmap(confusion_matrix(y_train, y_train_pred),
-           annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[0])
-sb.heatmap(confusion_matrix(y_test, y_test_pred), 
-           annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[1])
 
+# Confusion matrix for the training set
+train_cm = confusion_matrix(y_train, y_train_pred)
+sb.heatmap(train_cm, annot=True, fmt=".0f", annot_kws={"size": 18}, ax=axes[0])
+axes[0].set_title('Train Confusion Matrix', fontsize=12)  # Set the title
+
+# Confusion matrix for the test set
+test_cm = confusion_matrix(y_test, y_test_pred)
+sb.heatmap(test_cm, annot=True, fmt=".0f", annot_kws={"size": 18}, ax=axes[1])
+axes[1].set_title('Test Confusion Matrix', fontsize=12)  # Set the title
+
+# Inserting a title in the middle
+f.suptitle('Random Forest Classification Matrix for GPA and Years of Experience with respect to Placement Status', fontsize=14, y=1.05)
+
+plt.tight_layout()  # Adjust layout
+plt.show()
 
 #Linear Regression (GPA) 
 jobDataWithSalary = pd.DataFrame(jobData[jobData['salary'] > 0])
