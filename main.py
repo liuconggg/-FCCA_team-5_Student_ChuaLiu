@@ -8,6 +8,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn.tree import plot_tree
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import export_graphviz
 from IPython.display import Image
@@ -230,9 +233,7 @@ plt.legend(labels=legend_labels, title="Gender", loc="upper right")
 plt.show()
 
 
-
 # Classification
-
 y = pd.DataFrame(jobData["placement_status"])
 X = pd.DataFrame(jobData[variables])
 
@@ -310,3 +311,110 @@ sb.heatmap(confusion_matrix(y_train, y_train_pred),
            annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[0])
 sb.heatmap(confusion_matrix(y_test, y_test_pred), 
            annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[1])
+
+
+#Linear Regression (GPA) 
+jobDataWithSalary = pd.DataFrame(jobData[jobData['salary'] > 0])
+jobDataWithSalary.head()
+
+x = pd.DataFrame(jobDataWithSalary['gpa']) #Predictor: GPA 
+x.head()
+y = pd.DataFrame(jobDataWithSalary['salary']) #Response: Salary
+y.head()
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.25)
+y_train.describe()
+x_train.describe()
+
+linreg = LinearRegression()
+linreg.fit(x_train, y_train)
+
+y_train_pred = linreg.predict(x_train)
+y_test_pred = linreg.predict(x_test)
+
+# Create a figure and subplots
+fig, axes = plt.subplots(1, 2, figsize=(16, 8))
+
+# Plot for train data
+axes[0].scatter(x_train, y_train, color="blue", label="True values")
+axes[0].plot(x_train, y_train_pred, color='red', label="Predicted values")
+axes[0].set_title("Train Data (Linear Regression)")
+axes[0].set_xlabel("GPA")
+axes[0].set_ylabel("Salary")
+axes[0].legend()
+
+# Plot for test data
+axes[1].scatter(x_test, y_test, color="blue", label="True values")
+axes[1].plot(x_test, y_test_pred, color='red', label="Predicted values")
+axes[1].set_title("Test Data (Linear Regression)")
+axes[1].set_xlabel("GPA")
+axes[1].set_ylabel("Salary")
+axes[1].legend()
+
+# Show plots
+plt.tight_layout()
+plt.show()
+
+# Check the Goodness of Fit (on Train Data)
+print("Goodness of Fit of Model \tTrain Dataset (GPA)")
+print("Explained Variance (R^2) \t:", linreg.score(x_train, y_train))
+print("Mean Squared Error (MSE) \t:", mean_squared_error(y_train, y_train_pred))
+print()
+
+# Check the Goodness of Fit (on Test Data)
+print("Goodness of Fit of Model \tTest Dataset (GPA)")
+print("Explained Variance (R^2) \t:", linreg.score(x_test, y_test))
+print("Mean Squared Error (MSE) \t:", mean_squared_error(y_test, y_test_pred))
+print()
+
+
+#Linear Regression (Years of Experience)
+x = pd.DataFrame(jobDataWithSalary['years_of_experience']) #Predictor: Years of experience
+x.head()
+y = pd.DataFrame(jobDataWithSalary['salary']) #Response: salary
+y.head()
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.25)
+y_train.describe()
+x_train.describe()
+
+linreg = LinearRegression()
+linreg.fit(x_train, y_train)
+
+y_train_pred = linreg.predict(x_train)
+y_test_pred = linreg.predict(x_test)
+
+# Create a figure and subplots
+fig, axes = plt.subplots(1, 2, figsize=(16, 8))
+
+# Plot for train data
+axes[0].scatter(x_train, y_train, color="blue", label="True values")
+axes[0].plot(x_train, y_train_pred, color='red', label="Predicted values")
+axes[0].set_title("Train Data (Linear Regression)")
+axes[0].set_xlabel("Years of Experience")
+axes[0].set_ylabel("Salary")
+axes[0].legend()
+
+# Plot for test data
+axes[1].scatter(x_test, y_test, color="blue", label="True values")
+axes[1].plot(x_test, y_test_pred, color='black', label="Predicted values")
+axes[1].set_title("Test Data (Linear Regression)")
+axes[1].set_xlabel("Years of Experience")
+axes[1].set_ylabel("Salary")
+axes[1].legend()
+
+# Show plots
+plt.tight_layout()
+plt.show()
+
+# Check the Goodness of Fit (on Train Data)
+print("Goodness of Fit of Model \tTrain Dataset (Years of Experience)")
+print("Explained Variance (R^2) \t:", linreg.score(x_train, y_train))
+print("Mean Squared Error (MSE) \t:", mean_squared_error(y_train, y_train_pred))
+print()
+
+# Check the Goodness of Fit (on Test Data)
+print("Goodness of Fit of Model \tTest Dataset (Years of Experience)")
+print("Explained Variance (R^2) \t:", linreg.score(x_test, y_test))
+print("Mean Squared Error (MSE) \t:", mean_squared_error(y_test, y_test_pred))
+print()
