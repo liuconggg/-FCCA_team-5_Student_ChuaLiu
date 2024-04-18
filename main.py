@@ -4,6 +4,10 @@ import seaborn as sb
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
 from collections import defaultdict
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import confusion_matrix
+from sklearn.tree import plot_tree
 
 sb.set_theme() 
 
@@ -16,8 +20,6 @@ uniRankings.head()
 
 # Description of jobData 
 jobData.describe()
-
-
 
 # Markdown 1: Cleaning of Data 
 jobData.isnull().sum() # finding null values for each data
@@ -34,7 +36,6 @@ uniRanking = pd.DataFrame(uniRankings[['2024 RANK', 'Institution Name', 'Country
 inUs = uniRanking['Country'].isin(["United States"])
 
 cleanedUniRankings = uniRanking[inUs].set_index('2024 RANK') 
-# cleanedUniRankings = uniRanking.set_index('2024 RANK') 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace(r'\s*\([^()]*\)', '', regex=True)
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace(",", "" ,regex = True) 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace("-", "" ,regex = True) 
@@ -53,7 +54,7 @@ for index, row in cleanedUniRankings.iterrows():
     # Append the college name to the list corresponding to the ranking key
     uniRankingDict[ranking].append(college_name)
     
-
+    
 
 def remove_whitespace(text):
     return ''.join(text.split())
@@ -104,6 +105,8 @@ encoded_variables = ['gender', 'stream', 'college_name', 'placement_status']
 for variable in encoded_variables:
     jobData[f'{variable}'] = le.fit_transform(jobData[variable])
     encoding_mappings[variable] = dict(zip(le.classes_, le.transform(le.classes_)))
+    
+jobData
 
 # Heat Map 
 plt.figure(figsize=(16, 10))
@@ -137,12 +140,12 @@ plt.show()
 placement_status_labels = {v: k for k, v in encoding_mappings['placement_status'].items()}
 
 # Loop with adjusted plotting
-variables = ['gpa', 'years_of_experience']
+variables = ["gpa", "years_of_experience"]
 plt.figure(figsize=(18, 9))
 
 for i, variable in enumerate(variables, 1):
-    plt.subplot(2, 3, i)
-    sb.kdeplot(data=jobData, x=variable, hue=jobData['placement_status'].map(placement_status_labels), fill=True, alpha=0.5, linewidth=0)
+    plt.subplot(2, 2, i)
+    sb.kdeplot(data=jobData, x=variable, hue=jobData['placement_status'].map(placement_status_labels), fill=True, alpha=0.5, linewidth=0.5)
     plt.xlabel(variable.capitalize())
     plt.ylabel('Density')
     plt.title(f'Density Plot of {variable.capitalize()} by Placement Status')
@@ -216,3 +219,48 @@ legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
 plt.legend(labels=legend_labels, title="Gender", loc="upper right")
 plt.show()
 
+
+
+# Classification
+
+y = pd.DataFrame(jobData["placement_status"])
+X = pd.DataFrame(jobData[variables])
+
+# Split the Dataset into Train and Test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25)
+
+y_train["placement_status"].value_counts()  
+
+X_train.describe()
+
+trainDF = pd.concat([y_train, X_train], axis = 1).reindex(y_train.index)
+
+dectree = DecisionTreeClassifier(max_depth = 3)  # create the decision tree object
+dectree.fit(X_train, y_train)  
+
+X_train.columns
+f = plt.figure(figsize=(12,12))
+plot_tree(dectree, filled=True, rounded=True, 
+          feature_names=X_train.columns.tolist(),
+          class_names=["not place","placed"])        
+
+# Predict Legendary values corresponding to Total
+y_train_pred = dectree.predict(X_train)
+y_test_pred = dectree.predict(X_test)
+
+# Check the Goodness of Fit (on Train Data)
+print("Goodness of Fit of Model \tTrain Dataset")
+print("Classification Accuracy \t:", dectree.score(X_train, y_train))
+print()
+
+# Check the Goodness of Fit (on Test Data)
+print("Goodness of Fit of Model \tTest Dataset")
+print("Classification Accuracy \t:", dectree.score(X_test, y_test))
+print()
+
+# Plot the Confusion Matrix for Train and Test
+f, axes = plt.subplots(1, 2, figsize=(12, 4))
+sb.heatmap(confusion_matrix(y_train, y_train_pred),
+           annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[0])
+sb.heatmap(confusion_matrix(y_test, y_test_pred), 
+           annot = True, fmt=".0f", annot_kws={"size": 18}, ax = axes[1])
