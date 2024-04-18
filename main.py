@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from sklearn import preprocessing
 from collections import defaultdict
 
-
 sb.set_theme() 
 
 jobData = pd.read_csv('job_placement.csv')
@@ -115,7 +114,9 @@ plt.show()
 
 # Histogram for distribution of gender
 plt.figure(figsize=(10, 5))
+sb.set_palette("pastel")
 ax = sb.countplot(x='gender', data=jobData)
+
 
 for p in ax.patches:
     ax.annotate(format(p.get_height(), '.0f'), 
@@ -136,7 +137,7 @@ plt.show()
 placement_status_labels = {v: k for k, v in encoding_mappings['placement_status'].items()}
 
 # Loop with adjusted plotting
-variables = ['age', 'gpa', 'years_of_experience']
+variables = ['gpa', 'years_of_experience']
 plt.figure(figsize=(18, 9))
 
 for i, variable in enumerate(variables, 1):
@@ -194,11 +195,24 @@ plt.show()
 #Catplot for Placement 
 plt.figure(figsize=(15, 10))
 sb.set_palette("pastel")
-graph = sb.catplot(y = "placement_status", data = jobData, kind = "count", height = 8)
+graph = sb.catplot(y="placement_status", hue="gender", data=jobData, kind="count", height=8, hue_order=range(len(encoding_mappings['gender'])), legend=False)
 ax = graph.axes[0, 0]
-ax.bar_label(ax.containers[0], label_type='edge', fontsize=12, padding=5)
+
+# Add count labels to the bars
+for p in ax.patches:
+    ax.annotate(format(p.get_width(), '.0f'), 
+                 (p.get_x() + p.get_width(), p.get_y() + p.get_height() / 2.), 
+                 ha = 'center', va = 'center', 
+                 xytext = (12, 0), 
+                 textcoords = 'offset points',
+                 fontsize=12)
+
 ax.set_ylabel('') 
 ax.set_xlabel("Count", labelpad=10)  
-ax.set_title("Placement Status for graduates", pad=15)  # Increase or decrease this value as needed
+ax.set_title("Placement Status for graduates", pad=15)
 plt.yticks(ticks=range(len(encoding_mappings['placement_status'])), labels=list(encoding_mappings['placement_status'].keys()))
+
+legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
+plt.legend(labels=legend_labels, title="Gender", loc="upper right")
+plt.show()
 

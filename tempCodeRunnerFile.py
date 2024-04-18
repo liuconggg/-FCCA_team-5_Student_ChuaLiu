@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from sklearn import preprocessing
 from collections import defaultdict
 
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
 
 sb.set_theme() 
 
@@ -107,8 +110,10 @@ for variable in encoded_variables:
     encoding_mappings[variable] = dict(zip(le.classes_, le.transform(le.classes_)))
 
 # Heat Map 
-plt.figure(figsize=(8, 8))
-sb.heatmap(jobData.corr(), annot=True)
+plt.figure(figsize=(16, 10))
+heatmap = sb.heatmap(jobData.corr(), annot=True)
+heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=0)
+
 plt.show()
 
 # Histogram for distribution of gender
@@ -187,3 +192,52 @@ plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 # Adding legend
 plt.legend(labels = mapped_labels, title="Colleges", loc="center left", bbox_to_anchor=(0.8, 0, 0.5, 1))
 plt.show()
+
+
+#Catplot for Placement 
+# plt.figure(figsize=(15, 10))
+# sb.set_palette("pastel")
+# graph = sb.catplot(y="placement_status", hue="gender", data=jobData, kind="count", height=8, hue_order=range(len(encoding_mappings['gender'])), legend= False)
+# ax = graph.axes[0, 0]
+# ax.bar_label(ax.containers[0], label_type='edge', fontsize=12, padding=5)
+# ax.set_ylabel('') 
+# ax.set_xlabel("Count", labelpad=10)  
+# ax.set_title("Placement Status for graduates", pad=15)  # Increase or decrease this value as needed
+# plt.yticks(ticks=range(len(encoding_mappings['placement_status'])), labels=list(encoding_mappings['placement_status'].keys()))
+# legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
+# plt.legend(labels=legend_labels, title="Gender", loc="upper right")
+
+plt.figure(figsize=(15, 10))
+sb.set_palette("pastel")
+graph = sb.catplot(y="placement_status", hue="gender", data=jobData, kind="count", height=8, hue_order=range(len(encoding_mappings['gender'])), legend=False)
+ax = graph.axes[0, 0]
+
+# Add count labels to the bars
+for p in ax.patches:
+    ax.annotate(format(p.get_width(), '.0f'), 
+                 (p.get_x() + p.get_width(), p.get_y() + p.get_height() / 2.), 
+                 ha = 'center', va = 'center', 
+                 xytext = (12, 0), 
+                 textcoords = 'offset points',
+                 fontsize=12)
+
+ax.set_ylabel('') 
+ax.set_xlabel("Count", labelpad=10)  
+ax.set_title("Placement Status for graduates", pad=15)
+plt.yticks(ticks=range(len(encoding_mappings['placement_status'])), labels=list(encoding_mappings['placement_status'].keys()))
+
+legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
+plt.legend(labels=legend_labels, title="Gender", loc="upper right")
+
+plt.show()
+
+
+#Linear Regression
+#salaryData = pd.DateFrame(jobData[''])
+
+
+#areaDataTrain, areaDataTest, saleDataTrain, saleDataTest = train_test_split(areaData, saleData, test_size = 0.20)
+
+# Check the sample sizes
+#print("Train Set :", saleDataTrain.shape, areaDataTrain.shape)
+#print("Test Set  :", saleDataTest.shape, areaDataTest.shape)
