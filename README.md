@@ -1,7 +1,6 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
 
-<div align="center">
 <h3 align="center">Predicting employability of graduates with Bachelor's in US</h3>
 
 <!-- TABLE OF CONTENTS -->
