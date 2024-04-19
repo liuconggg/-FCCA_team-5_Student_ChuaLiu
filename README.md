@@ -2,7 +2,9 @@
 <a name="readme-top"></a>
 
 <h3 align="center">Predicting employability of graduates with Bachelor's in US</h3>
-
+<p align="center">
+    <a href="">Link to Presentation Video</a>
+  </p>
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
