@@ -202,6 +202,29 @@ legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
 plt.legend(labels=legend_labels, title="Gender", loc="upper right")
 plt.show()
 
+#Catplot for Streams by Gender
+plt.figure(figsize=(15, 10))
+sb.set_palette("pastel")
+graph = sb.catplot(y="stream", hue="gender", data=jobData, kind="count", height=8, hue_order=range(len(encoding_mappings['gender'])), legend=False)
+ax = graph.axes[0, 0]
+
+# Add count labels to the bars
+for p in ax.patches:
+    ax.annotate(format(p.get_width(), '.0f'), 
+                 (p.get_x() + p.get_width(), p.get_y() + p.get_height() / 2.), 
+                 ha = 'center', va = 'center', 
+                 xytext = (12, 0), 
+                 textcoords = 'offset points',
+                 fontsize=12)
+
+ax.set_ylabel('') 
+ax.set_xlabel("Count", labelpad=10)  
+ax.set_title("Gender Distribution by Streams", pad=15)
+plt.yticks(ticks=range(len(encoding_mappings['stream'])), labels=list(encoding_mappings['stream'].keys()))
+legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
+plt.legend(labels=legend_labels, title="Gender", loc="upper right")
+plt.show()
+
 # Heat Map to show correlation between variables
 plt.figure(figsize=(16, 10))
 heatmap = sb.heatmap(jobData.corr(), annot=True)
