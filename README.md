@@ -22,10 +22,13 @@
 ## About The Project
 The primary goal of this project is to predict the employability of graduates with Bachelor's in US, specifically in Computer Science & Information Technology. We have divided into following section to achieve the primary goal. 
 
-Datasets:
+Data Selection:
+<br>
 Source: Kaggle
-Dataset 1: Job placement dataset - This dataset contains This dataset contains information about Bachelor's degree graduates from various universities in the USA and their placement status. 
-Dataset 2: QS World University Rankings 2024 - This dataset contains the 20th edition of the QS World University Rankings features 1,500 institutions across 104 locations.
+<br>
+Dataset 1: Job placement dataset - This dataset contains information about Bachelor's degree graduates from various universities in the USA and their placement status. 
+<br>
+Dataset 2: QS World University Rankings 2024 - This dataset contains the 20th edition of the QS World University Rankings featuring 1,500 institutions across 104 locations.
 
 Data Preparation:
 1) Removal of null values from dataset 1.
@@ -39,6 +42,7 @@ Note:
 At this stage, our merged dataset is cleaned.
 
 Visual Representations:
+<br>
 (Raw dataset):
 1) Bar chart - distribution of students in each stream
 
@@ -46,15 +50,15 @@ Visual Representations:
 
 
 (Cleaned dataset):
-1) Pie chart - distribution of students in different colleges.
+1) Pie chart - distribution of graduates in different colleges.
 
 ![2](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/6a87ff0d-b9f3-4415-a8fe-0f1b0d21fe26)
 
-2) Histogram - distribution of gender in both CS & IT.
+2) Histogram - distribution of graduates by gender in both CS & IT.
 
 ![13](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/6321d7f5-8f71-4e8a-9233-31d63865b37b)
 
-3) Catplot - distribution of gender by streams (CS & IT) respectively.
+3) Catplot - distribution of graduates by gender according to their streams (CS & IT) respectively.
 
 ![3](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/24422810-730f-47ed-b187-6342f834dd4c)
 
@@ -74,7 +78,7 @@ Visual Representations:
 
 ![7](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/55147a37-105f-4444-88ac-6b3f2cd0a528)
 
-8) Confusion matrix - the accuracy of our classification for placement with respect to the variables gpa & years of experience. (Decision Tree Classifier)
+8) Confusion matrix - the accuracy of our classification model for placement with respect to the variables gpa & years of experience. (Decision Tree Classifier)
 
 ![8](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/6036cf3a-738e-4b0b-ae20-6bcc59faca0a)
 
@@ -82,15 +86,15 @@ Visual Representations:
 
 ![9](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/16208b9e-367b-44fc-8d64-9a819e928569)
 
-10) Confusion matrix - the accuracy of our classification for placement with respect to the variables gpa & years of experience. (Random Forest Classifier)
+10) Confusion matrix - the accuracy of our classification model for placement with respect to the variables gpa & years of experience. (Random Forest Classifier)
 
 ![10](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/7b896df6-3a34-4de4-aa7c-50c04eeb58c0)
 
-11) Scatter plot - prediction of salary. salary vs gpa
+11) Scatter plot - prediction of salary using gpa
 
 ![11](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/43cd3ec2-8c26-456a-929a-27393ba3cc1d)
 
-12) Scatter plot - prediction of salary. salary vs years of experience.
+12) Scatter plot - prediction of salary using years of experience.
 
 ![12](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/cd4480bf-cbbe-4444-a9b8-a6530af87344)
 
