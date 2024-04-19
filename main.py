@@ -111,7 +111,7 @@ le = preprocessing.LabelEncoder()
 jobData = jobData.replace("=", "" ,regex = True) 
 jobData.drop(columns=['degree', 'name'], inplace=True)
 encoding_mappings = {}
-
+    
 # Encode each variable and store mappings
 encoded_variables = ['gender', 'stream', 'college_name', 'placement_status']
 for variable in encoded_variables:
@@ -120,24 +120,6 @@ for variable in encoded_variables:
 
 jobData.head()
 jobData.describe()
-
-# Histogram for distribution of gender
-plt.figure(figsize=(10, 5))
-sb.set_palette("pastel")
-ax = sb.countplot(x='gender', data=jobData)
-
-for p in ax.patches:
-    ax.annotate(format(p.get_height(), '.0f'), 
-                 (p.get_x() + p.get_width() / 2., p.get_height()), 
-                 ha = 'center', va = 'center', 
-                 xytext = (0, 5), 
-                 textcoords = 'offset points')
-    
-plt.xlabel('Gender')
-plt.ylabel('Count')
-plt.title('Distribution of Gender')
-plt.xticks(ticks=[0, 1], labels=['Female', 'Male'])  # If 0 represents male and 1 represents female
-plt.show()
 
 #Pie chart for distribution of students in different colleges
 college_counts = jobData['college_name'].value_counts()
@@ -179,28 +161,24 @@ plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 plt.legend(labels = mapped_labels, title="Colleges", loc="center left", bbox_to_anchor=(0.8, 0, 0.5, 1))
 plt.show()
 
-#Catplot for Placement by Gender
-plt.figure(figsize=(15, 10))
+# Histogram for distribution of gender
+plt.figure(figsize=(10, 5))
 sb.set_palette("pastel")
-graph = sb.catplot(y="placement_status", hue="gender", data=jobData, kind="count", height=8, hue_order=range(len(encoding_mappings['gender'])), legend=False)
-ax = graph.axes[0, 0]
+ax = sb.countplot(x='gender', data=jobData)
 
-# Add count labels to the bars
 for p in ax.patches:
-    ax.annotate(format(p.get_width(), '.0f'), 
-                 (p.get_x() + p.get_width(), p.get_y() + p.get_height() / 2.), 
+    ax.annotate(format(p.get_height(), '.0f'), 
+                 (p.get_x() + p.get_width() / 2., p.get_height()), 
                  ha = 'center', va = 'center', 
-                 xytext = (12, 0), 
-                 textcoords = 'offset points',
-                 fontsize=12)
-
-ax.set_ylabel('') 
-ax.set_xlabel("Count", labelpad=10)  
-ax.set_title("Placement Status for graduates", pad=15)
-plt.yticks(ticks=range(len(encoding_mappings['placement_status'])), labels=list(encoding_mappings['placement_status'].keys()))
-legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
-plt.legend(labels=legend_labels, title="Gender", loc="upper right")
+                 xytext = (0, 5), 
+                 textcoords = 'offset points')
+    
+plt.xlabel('Gender')
+plt.ylabel('Count')
+plt.title('Distribution of Gender')
+plt.xticks(ticks=[0, 1], labels=['Female', 'Male'])  # If 0 represents male and 1 represents female
 plt.show()
+
 
 #Catplot for Streams by Gender
 plt.figure(figsize=(15, 10))
@@ -225,6 +203,31 @@ legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
 plt.legend(labels=legend_labels, title="Gender", loc="upper right")
 plt.show()
 
+
+
+#Catplot for Placement by Gender
+plt.figure(figsize=(15, 10))
+sb.set_palette("pastel")
+graph = sb.catplot(y="placement_status", hue="gender", data=jobData, kind="count", height=8, hue_order=range(len(encoding_mappings['gender'])), legend=False)
+ax = graph.axes[0, 0]
+
+# Add count labels to the bars
+for p in ax.patches:
+    ax.annotate(format(p.get_width(), '.0f'), 
+                 (p.get_x() + p.get_width(), p.get_y() + p.get_height() / 2.), 
+                 ha = 'center', va = 'center', 
+                 xytext = (12, 0), 
+                 textcoords = 'offset points',
+                 fontsize=12)
+
+ax.set_ylabel('') 
+ax.set_xlabel("Count", labelpad=10)  
+ax.set_title("Placement Status for graduates", pad=15)
+plt.yticks(ticks=range(len(encoding_mappings['placement_status'])), labels=list(encoding_mappings['placement_status'].keys()))
+legend_labels = [f"{k}" for k, v in encoding_mappings['gender'].items()]
+plt.legend(labels=legend_labels, title="Gender", loc="upper right")
+plt.show()
+
 # Heat Map to show correlation between variables
 plt.figure(figsize=(16, 10))
 heatmap = sb.heatmap(jobData.corr(), annot=True)
@@ -232,7 +235,7 @@ heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=0)
 plt.title('Heat Map')
 plt.show()
 
-#KDE plot GPA and Years of Experience
+# KDE plot GPA and Years of Experience
 placement_status_labels = {v: k for k, v in encoding_mappings['placement_status'].items()}
 variables = ["gpa", "years_of_experience"]
 plt.figure(figsize=(18, 9))
@@ -422,6 +425,7 @@ fig, axes = plt.subplots(1, 2, figsize=(16, 8))
 # Plot for train data
 axes[0].scatter(x_train, y_train, color="blue", label="True values")
 axes[0].plot(x_train, y_train_pred, color='black', label="Predicted values")
+axes[0].plot(x_train, y_train_pred, color='black', label="Predicted values")
 axes[0].set_title("Train Data (Linear Regression)")
 axes[0].set_xlabel("Years of Experience")
 axes[0].set_ylabel("Salary")
@@ -472,4 +476,3 @@ fig.update_layout(width=800, height=500, title='3D Scatterplot for Salary with r
 
 # Show plot
 fig.show()
-
