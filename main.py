@@ -20,10 +20,9 @@ uniRankings = pd.read_csv('uni_ranking.csv')
 
 jobData.head()
 jobData.describe()
-
+jobData
 
 uniRankings.head()
-uniRankings.describe()
 
 # Cleaning of Data 
 jobData.isnull().sum() # finding null values for each data
@@ -42,6 +41,8 @@ cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace("-", "" ,regex = True) 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace(" at ", "" ,regex = True) 
 cleanedUniRankings['Institution Name'] = cleanedUniRankings['Institution Name'].str.replace("The ", "" ,regex = True) 
+
+jobData.head()
 
 # Create a defaultdict with lists as values
 uniRankingDict = defaultdict(list)
@@ -85,6 +86,7 @@ def find_best_match(college_name, uniRankingDict):
 jobData['ranking'] = jobData['college_name'].apply(lambda x: find_best_match(x, uniRankingDict))
 isSanFrans  = jobData['college_name'].isin(['University of CaliforniaSan Francisco']) # name of university not in ranking dataset
 jobData = jobData[~isSanFrans] # filter out the college name that is in job data but not in university_ranking  which is "University of CaliforniaSan Francisco"
+jobData.head()
 
 # bar chart for distribution of students in each stream 
 plt.figure(figsize=(15, 10))
@@ -118,7 +120,7 @@ for variable in encoded_variables:
     jobData[f'{variable}'] = le.fit_transform(jobData[variable])
     encoding_mappings[variable] = dict(zip(le.classes_, le.transform(le.classes_)))
 
-jobData.head()
+jobData
 jobData.describe()
 
 #Pie chart for distribution of students in different colleges
@@ -180,7 +182,7 @@ plt.xticks(ticks=[0, 1], labels=['Female', 'Male'])  # If 0 represents male and 
 plt.show()
 
 
-#Catplot for Streams by Gender
+# Catplot for distribution of streams by gender
 plt.figure(figsize=(15, 10))
 sb.set_palette("pastel")
 graph = sb.catplot(y="stream", hue="gender", data=jobData, kind="count", height=8, hue_order=range(len(encoding_mappings['gender'])), legend=False)
@@ -309,10 +311,6 @@ classifier_rf = RandomForestClassifier(n_jobs=-1, max_depth=5,
 
 classifier_rf.fit(X_train, y_train)
 
-y_pred = classifier_rf.predict(X_test)
-
-# Calculate Model Accuracy
-print("Random Forest Classifier Accuracy:", accuracy_score(y_test, y_pred))
 
 # show only the first three decision tree
 for i in range(3):
@@ -328,6 +326,11 @@ for i in range(3):
     display(graph)
 y_train_pred = classifier_rf.predict(X_train)
 y_test_pred = classifier_rf.predict(X_test)
+
+
+# Calculate Model Accuracy
+print("Random Forest Classifier Accuracy for train data:", accuracy_score(y_train, y_train_pred))
+print("Random Forest Classifier Accuracy for test data:", accuracy_score(y_test, y_test_pred))
 
 # Plotting
 f, axes = plt.subplots(1, 2, figsize=(12, 4))
@@ -347,6 +350,7 @@ f.suptitle('Random Forest Classification Matrix for GPA and Years of Experience 
 
 plt.tight_layout()  # Adjust layout
 plt.show()
+
 
 #Linear Regression (GPA) 
 jobDataWithSalary = pd.DataFrame(jobData[jobData['salary'] > 0])
@@ -424,7 +428,6 @@ fig, axes = plt.subplots(1, 2, figsize=(16, 8))
 
 # Plot for train data
 axes[0].scatter(x_train, y_train, color="blue", label="True values")
-axes[0].plot(x_train, y_train_pred, color='black', label="Predicted values")
 axes[0].plot(x_train, y_train_pred, color='black', label="Predicted values")
 axes[0].set_title("Train Data (Linear Regression)")
 axes[0].set_xlabel("Years of Experience")
