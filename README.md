@@ -77,7 +77,8 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Chua Yong Tai Anthony - CHUA1091@e.ntu.edu.sg, Liu Cong - CLIU034@e.ntu.edu.sg
+Chua Yong Tai Anthony - CHUA1091@e.ntu.edu.sg, 
+Liu Cong - CLIU034@e.ntu.edu.sg
 
 Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
 
