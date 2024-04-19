@@ -41,45 +41,62 @@ At this stage, our merged dataset is cleaned.
 Visual Representations:
 (Raw dataset):
 1) Bar chart - distribution of students in each stream
-![1](/visuals/1.png)
+
+![1](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/07f38486-8e0f-4c9b-9108-6e988805d5cd)
 
 
 (Cleaned dataset):
 1) Pie chart - distribution of students in different colleges.
-![2](/visuals/2.png)
+
+![2](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/6a87ff0d-b9f3-4415-a8fe-0f1b0d21fe26)
 
 2) Histogram - distribution of gender in both CS & IT.
-![13](/visuals/13.png)
+
+![13](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/6321d7f5-8f71-4e8a-9233-31d63865b37b)
 
 3) Catplot - distribution of gender by streams (CS & IT) respectively.
-![3](/visuals/3.png)
+
+![3](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/24422810-730f-47ed-b187-6342f834dd4c)
 
 4) Catplot - distribution of placement by gender.
-![4](/visuals/4.png)
+
+![4](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/90c79852-d86a-4301-997c-d82dca097b04)
 
 5) Heatmap - correlation between variables.
-![5](/visuals/5.png)
+
+![5](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/11d83e03-6ffa-4c8a-8c89-f5a97ce4f594)
 
 6) KDE plot - placement_status vs gpa & placement_status vs years of experience.
-![6](/visuals/6.png)
+
+![6](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/3b20be9f-1b48-4da8-9264-115b44a2bc95)
 
 7) Decision tree - gini index of our classification for placement with respect to the variables gpa & years of experience. (Decision Tree Classifier)
-![7](/visuals/7.png)
+
+![7](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/55147a37-105f-4444-88ac-6b3f2cd0a528)
 
 8) Confusion matrix - the accuracy of our classification for placement with respect to the variables gpa & years of experience. (Decision Tree Classifier)
-![8](/visuals/8.png)
+
+![8](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/6036cf3a-738e-4b0b-ae20-6bcc59faca0a)
 
 9) Decision tree - gini index of our classification for placement with respect to the variables gpa & years of experience. (Random Forest Classifier)
-![9](/visuals/9.png)
 
-11) Confusion matrix - the accuracy of our classification for placement with respect to the variables gpa & years of experience. (Random Forest Classifier)
-![10](/visuals/10.png)
+![9](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/16208b9e-367b-44fc-8d64-9a819e928569)
 
-13) Scatter plot - prediction of salary. salary vs gpa & salary vs years of experience.
-![11](/visuals/11.png)
+10) Confusion matrix - the accuracy of our classification for placement with respect to the variables gpa & years of experience. (Random Forest Classifier)
 
-14) 3D scatter plot - displaying salary with respect to gpa & years of experience.
-![12](/visuals/12.png)
+![10](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/7b896df6-3a34-4de4-aa7c-50c04eeb58c0)
+
+11) Scatter plot - prediction of salary. salary vs gpa
+
+![11](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/43cd3ec2-8c26-456a-929a-27393ba3cc1d)
+
+12) Scatter plot - prediction of salary. salary vs years of experience.
+
+![12](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/cd4480bf-cbbe-4444-a9b8-a6530af87344)
+
+13) 3D scatter plot - displaying salary with respect to gpa & years of experience.
+
+![3D Scatterplot Gif](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/8028451c-f3cc-4940-8cf6-bcfc79b06343)
 
 
 Machine Learning Models Used:
