@@ -129,7 +129,13 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+## Contributions
+Data Preparation: Chua Yong Tai Anthony & Liu Cong
+Visual Representations: Chua Yong Tai Anthony & Liu Cong
+Machine Learning Models Used:
+1) Decision Tree Classifier - Liu Cong
+2) Random Forest Classifier - Chua Yong Tai Anthony & Liu Cong
+3) Linear Regression - Chua Yong Tai Anthony
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
