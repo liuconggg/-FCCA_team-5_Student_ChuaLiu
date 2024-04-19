@@ -325,7 +325,7 @@ for i in range(3):
                                proportion=True)
     graph = graphviz.Source(dot_data)
 
-# display(graph)
+    display(graph)
 y_train_pred = classifier_rf.predict(X_train)
 y_test_pred = classifier_rf.predict(X_test)
 
