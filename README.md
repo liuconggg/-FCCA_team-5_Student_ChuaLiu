@@ -115,7 +115,7 @@ Findings:
 2. GPA and years of experience can influence the placement status and the salary one can expect
 
 Recommendation:
-1. While GPA is quite influential in one's placement status, through hard work and experience, one can still be placed with a high salary despite a lower GPA. This is extremely relevant to us as com science students like ourselves can do <b> side projects </b>, <b> internships </b>, <b> hackathons </b> and <b> practice leet coding </b> to rake up our experience.
+1. While GPA is quite influential in one's placement status, through hard work and experience, one can still be placed with a high salary despite a lower GPA. This is extremely relevant to us as com science students like ourselves as we can do <b> side projects </b>, <b> internships </b>, <b> hackathons </b> and <b> practice leet coding </b> to rake up our experience.
 
 Conclusion: <br>
 We were able to achieve a good accuracy score in predicting the employability of students in US from CS & IT with the random forest classifier model. 
