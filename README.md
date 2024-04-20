@@ -12,7 +12,6 @@
     <li>
       <a href="#about-the-project">About The Project</a>
     </li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -119,14 +118,6 @@ We were able to achieve a good accuracy score in predicting the employability of
 However, we were unable to find an optimal regression model for the salary due to the insufficient data from our cleaned dataset as we only have less than 300 data.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- CONTACT -->
