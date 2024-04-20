@@ -114,7 +114,7 @@ Findings:
 1. College name and its world ranking, gender and age do not have much impact on the placement status of fresh graduates in US
 2. GPA and years of experience can influence the placement status and the salary one can expect 
 
-Conclusion: 
+Conclusion: <br>
 We were able to achieve a good accuracy score in predicting the employability of students in US from CS & IT with the random forest classifier model. 
 However, we were not able to find a optimal regression model for the salary due to the insufficient data from our cleaned dataset as we only have less than 300 data.
 
