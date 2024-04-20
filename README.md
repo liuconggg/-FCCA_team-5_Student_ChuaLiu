@@ -22,7 +22,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-The primary goal of this project is to predict the employability of graduates with Bachelor's in the US, specifically in Computer Science & Information Technology. We have divided into the following sections to achieve the primary goal. 
+The primary goal of this project is to predict the employability of graduates with Bachelor's in the US, specifically in Computer Science & Information Technology. We have divided into the following sections to achieve the primary goal:
 
 Data Selection:
 <br>
@@ -72,23 +72,23 @@ Visual Representations:
 
 ![5](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/11d83e03-6ffa-4c8a-8c89-f5a97ce4f594)
 
-6) KDE plot - placement_status using gpa & placement_status using years of experience.
+6) KDE plot - placement_status using gpa & placement_status using years of experience
 
 ![6](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/3b20be9f-1b48-4da8-9264-115b44a2bc95)
 
-7) Decision tree - gini index of our classification for placement with respect to the variables GPA & years of experience. (Decision Tree Classifier)
+7) Decision tree - gini index of our classification for placement with respect to the variables GPA & years of experience (Decision Tree Classifier)
 
 ![7](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/55147a37-105f-4444-88ac-6b3f2cd0a528)
 
-8) Confusion matrix - the accuracy of our classification model for placement with respect to the variables GPA & years of experience. (Decision Tree Classifier)
+8) Confusion matrix - the accuracy of our classification model for placement with respect to the variables GPA & years of experience (Decision Tree Classifier)
 
 ![8](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/6036cf3a-738e-4b0b-ae20-6bcc59faca0a)
 
-9) Decision tree - gini index of our classification for placement with respect to the variables GPA & years of experience. (Random Forest Classifier)
+9) Decision tree - gini index of our classification for placement with respect to the variables GPA & years of experience (Random Forest Classifier)
 
 ![9](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/16208b9e-367b-44fc-8d64-9a819e928569)
 
-10) Confusion matrix - the accuracy of our classification model for placement with respect to the variables GPA & years of experience. (Random Forest Classifier)
+10) Confusion matrix - the accuracy of our classification model for placement with respect to the variables GPA & years of experience (Random Forest Classifier)
 
 ![10](https://github.com/liuconggg/FCS4_Team-5-/assets/128717856/7b896df6-3a34-4de4-aa7c-50c04eeb58c0)
 
@@ -116,7 +116,7 @@ Findings:
 
 Conclusion: <br>
 We were able to achieve a good accuracy score in predicting the employability of students in US from CS & IT with the random forest classifier model. 
-However, we were not able to find a optimal regression model for the salary due to the insufficient data from our cleaned dataset as we only have less than 300 data.
+However, we were unable to find an optimal regression model for the salary due to the insufficient data from our cleaned dataset as we only have less than 300 data.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -150,11 +150,11 @@ Machine Learning Models Used:
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-[Job Placement Dataset]
+[Job Placement Dataset] <br>
 [QS World University Rankings 2024]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[Job Placement Dataset]: https://www.kaggle.com/datasets/mahad049/job-placement-dataset/data
+[Job Placement Dataset]: https://www.kaggle.com/datasets/mahad049/job-placement-dataset/data <br>
 [QS World University Rankings 2024]: https://www.kaggle.com/datasets/joebeachcapital/qs-world-university-rankings-2024
