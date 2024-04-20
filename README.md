@@ -13,6 +13,7 @@
       <a href="#about-the-project">About The Project</a>
     </li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#contributions">Contributions</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -29,7 +30,7 @@ Source: Kaggle
 <br>
 Dataset 1: Job placement dataset - This dataset contains information about Bachelor's degree graduates from various universities in the USA and their placement status. 
 <br>
-Dataset 2: QS World University Rankings 2024 - This dataset contains the 20th edition of the QS World University Rankings featuring 1,500 institutions across 104 locations.
+Dataset 2: QS World University Rankings 2024 - This dataset contains the 20th edition of the QS World University Rankings featuring 1,500 institutions across 114 locations.
 
 Data Preparation:
 1) Removal of null values from dataset 1.
@@ -137,6 +138,8 @@ Machine Learning Models Used:
 1) Decision Tree Classifier - Liu Cong
 2) Random Forest Classifier - Chua Yong Tai Anthony & Liu Cong
 3) Linear Regression - Chua Yong Tai Anthony
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
