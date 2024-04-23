@@ -24,12 +24,12 @@
 ## About The Project
 The primary goal of this project is to predict the employability of graduates with Bachelor's in the US, specifically in Computer Science & Information Technology. 
 
-The Machine Learning Models we used are:
+The Machine Learning Models we have used are:
 1) Decision Tree Classifier - a classification model to predict the employability of graduates
 2) Random Forest Classifier - a better classification model to predict the employability of graduates
 3) Linear Regression - a model to predict salary using linear regression
 
-We have divided into the following sections to achieve the primary goal:
+To achieve the primary goal, we have divided into the following sections:
 
 Data Selection:
 <br>
